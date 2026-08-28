@@ -39,7 +39,8 @@ function generateProject(projectName) {
  |_____/ \\___|\\___|\\__,_|_|  \\___|_|  |_|______|_|  \\_\\_| \\_|
 `;
 
-  console.log(`${colors.cyan}${colors.bold}${logo}${colors.reset}\n`);
+  console.log(`${colors.cyan}${colors.bold}${logo}${colors.reset}`);
+  console.log(`                                     ${colors.yellow}by Badr Moujahid${colors.reset}\n`);
   console.log(`${colors.green}✔${colors.reset} Creating project...`);
 
   try {

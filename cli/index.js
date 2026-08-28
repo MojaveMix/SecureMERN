@@ -9,6 +9,7 @@ const projectName = args[1];
 const colors = {
   reset: '\x1b[0m',
   cyan: '\x1b[36m',
+  yellow: '\x1b[33m',
   bold: '\x1b[1m'
 };
 
@@ -24,6 +25,8 @@ const logo = `
 if (command === 'create') {
   generateProject(projectName);
 } else {
-  console.log(`${colors.cyan}${colors.bold}${logo}${colors.reset}\n${colors.bold}Usage:${colors.reset}\n  secure-mern create <project-name>`);
+  console.log(`${colors.cyan}${colors.bold}${logo}${colors.reset}`);
+  console.log(`                                     ${colors.yellow}by Badr Moujahid${colors.reset}\n`);
+  console.log(`${colors.bold}Usage:${colors.reset}\n  secure-mern create <project-name>`);
   process.exit(1);
 }
