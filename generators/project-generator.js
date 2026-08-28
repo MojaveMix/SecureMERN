@@ -1,32 +1,42 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
+// ANSI Color Codes
+const colors = {
+  reset: '\x1b[0m',
+  bold: '\x1b[1m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  cyan: '\x1b[36m',
+};
+
 function generateProject(projectName) {
   if (!projectName) {
-    console.error('✖ Please provide a project name.\n\nUsage:\n  secure-mern create <project-name>');
+    console.error(`${colors.red}✖ Please provide a project name.${colors.reset}\n\nUsage:\n  secure-mern create <project-name>`);
     process.exit(1);
   }
 
   const isValidName = /^[a-zA-Z0-9-_]+$/.test(projectName);
   if (!isValidName) {
-    console.error('✖ Invalid project name. Use only letters, numbers, dashes, and underscores.');
+    console.error(`${colors.red}✖ Invalid project name. Use only letters, numbers, dashes, and underscores.${colors.reset}`);
     process.exit(1);
   }
 
   const projectDir = path.resolve(process.cwd(), projectName);
 
   if (fs.existsSync(projectDir)) {
-    console.error(`✖ Directory "${projectName}" already exists.`);
+    console.error(`${colors.red}✖ Directory "${projectName}" already exists.${colors.reset}`);
     process.exit(1);
   }
 
-  console.log('SecureMERN\n');
-  console.log('✔ Creating project...');
+  console.log(`${colors.cyan}${colors.bold}SecureMERN${colors.reset}\n`);
+  console.log(`${colors.green}✔${colors.reset} Creating project...`);
 
   try {
     fs.mkdirSync(projectDir, { recursive: true });
 
-    console.log('✔ Creating frontend...');
+    console.log(`${colors.green}✔${colors.reset} Creating frontend...`);
     copyTemplate(path.join(__dirname, '../templates/client'), path.join(projectDir, 'client'));
     
     // Update client package.json with project name
@@ -37,7 +47,7 @@ function generateProject(projectName) {
       fs.writeFileSync(clientPkgPath, JSON.stringify(clientPkg, null, 2));
     }
 
-    console.log('✔ Creating backend...');
+    console.log(`${colors.green}✔${colors.reset} Creating backend...`);
     copyTemplate(path.join(__dirname, '../templates/server'), path.join(projectDir, 'server'));
 
     // Update server package.json with project name
@@ -48,9 +58,9 @@ function generateProject(projectName) {
       fs.writeFileSync(serverPkgPath, JSON.stringify(serverPkg, null, 2));
     }
 
-    console.log('✔ Configuring security defaults...');
-    console.log('✔ Configuring error handling...');
-    console.log('✔ Configuring rate limiting...');
+    console.log(`${colors.green}✔${colors.reset} Configuring security defaults...`);
+    console.log(`${colors.green}✔${colors.reset} Configuring error handling...`);
+    console.log(`${colors.green}✔${colors.reset} Configuring rate limiting...`);
 
     const envExample = `NODE_ENV=development
 PORT=5000
@@ -74,7 +84,7 @@ BODY_LIMIT=10kb
     fs.writeFileSync(path.join(projectDir, '.env.example'), envExample);
     fs.writeFileSync(path.join(projectDir, '.gitignore'), 'node_modules/\n.env\n.DS_Store\n');
 
-    console.log('✔ Creating documentation...');
+    console.log(`${colors.green}✔${colors.reset} Creating documentation...`);
     const readmeContent = `# ${projectName}
 
 A Full-Stack project generated with SecureMERN.
@@ -151,12 +161,12 @@ The development environment automatically starts both the React frontend and the
     };
     fs.writeFileSync(path.join(projectDir, 'package.json'), JSON.stringify(rootPackageJson, null, 2));
 
-    console.log('\nSecureMERN project created successfully!\n\nNext steps:\n');
-    console.log(`  cd ${projectName}`);
-    console.log(`  npm install`);
-    console.log(`  npm run dev\n`);
+    console.log(`\n${colors.cyan}SecureMERN project created successfully!${colors.reset}\n\n${colors.bold}Next steps:${colors.reset}\n`);
+    console.log(`  ${colors.yellow}cd${colors.reset} ${projectName}`);
+    console.log(`  ${colors.yellow}npm${colors.reset} install`);
+    console.log(`  ${colors.yellow}npm${colors.reset} run dev\n`);
   } catch (error) {
-    console.error('✖ An error occurred while creating the project:', error.message);
+    console.error(`${colors.red}✖ An error occurred while creating the project: ${error.message}${colors.reset}`);
     process.exit(1);
   }
 }
@@ -167,6 +177,8 @@ function copyTemplate(src, dest) {
   const entries = fs.readdirSync(src, { withFileTypes: true });
 
   for (const entry of entries) {
+    if (entry.name === 'node_modules') continue;
+
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
 
