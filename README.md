@@ -2,7 +2,7 @@
 
 > A robust, secure Full-Stack project generator for React and Node.js.
 
-[![Version](https://img.shields.io/badge/version-V0.3-blue.svg)]()
+[![Version](https://img.shields.io/badge/version-V0.5-blue.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js->=18.0.0-success.svg)]()
 
@@ -16,7 +16,7 @@
 - **⚛️ Modern Frontend:** Powered by React and Vite for blazing-fast development.
 - **🚀 Scalable Backend:** Clean Express API architecture with decoupled routes and controllers.
 - **🔄 Concurrency:** Start both frontend and backend seamlessly with a single command.
-- **🔒 Security First (Upcoming):** Designed with a roadmap to implement advanced security practices in future versions.
+- **🔒 Security First:** Includes built-in security defaults like Helmet, CORS, Rate Limiting, Input Validation (Zod), and safe centralized error handling.
 
 ## 📦 Quick Start
 
@@ -69,8 +69,11 @@ my-app/
 │
 ├── server/                 # Express backend
 │   ├── src/
+│   │   ├── config/         # App & Security configuration
 │   │   ├── controllers/    # Request handlers
+│   │   ├── middlewares/    # Custom & Security middlewares
 │   │   ├── routes/         # API routes definitions
+│   │   ├── validators/     # Input validation schemas
 │   │   ├── app.js          # Express app configuration
 │   │   └── server.js       # Server entry point
 │   └── package.json
@@ -93,8 +96,8 @@ We are actively developing SecureMERN. Here is our roadmap:
 - [x] **V0.1** — CLI Foundation
 - [x] **V0.2** — Project Templates
 - [x] **V0.3** — React + Express Integration
-- [ ] **V0.4** — MySQL + Sequelize Integration
-- [ ] **V0.5** — Security Foundation (Helmet, Rate Limiting, CORS)
+- [x] **V0.4** — MySQL + Sequelize Integration
+- [x] **V0.5** — Security Foundation (Helmet, Rate Limiting, CORS)
 - [ ] **V0.6** — Authentication & JWT
 
 ## 🤝 Contributing

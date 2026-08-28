@@ -26,7 +26,7 @@ function generateProject(projectName) {
   try {
     fs.mkdirSync(projectDir, { recursive: true });
 
-    console.log('✔ Creating client structure...');
+    console.log('✔ Creating frontend...');
     copyTemplate(path.join(__dirname, '../templates/client'), path.join(projectDir, 'client'));
     
     // Update client package.json with project name
@@ -37,7 +37,7 @@ function generateProject(projectName) {
       fs.writeFileSync(clientPkgPath, JSON.stringify(clientPkg, null, 2));
     }
 
-    console.log('✔ Creating server structure...');
+    console.log('✔ Creating backend...');
     copyTemplate(path.join(__dirname, '../templates/server'), path.join(projectDir, 'server'));
 
     // Update server package.json with project name
@@ -48,12 +48,25 @@ function generateProject(projectName) {
       fs.writeFileSync(serverPkgPath, JSON.stringify(serverPkg, null, 2));
     }
 
-    console.log('✔ Creating configuration files...');
-    fs.writeFileSync(path.join(projectDir, '.env.example'), 'NODE_ENV=development\nPORT=5000\nVITE_API_URL=http://localhost:5000/api\n');
+    console.log('✔ Configuring security defaults...');
+    console.log('✔ Configuring error handling...');
+    console.log('✔ Configuring rate limiting...');
+
+    const envExample = `NODE_ENV=development
+PORT=5000
+CLIENT_URL=http://localhost:5173
+VITE_API_URL=http://localhost:5000/api
+
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX=100
+
+BODY_LIMIT=10kb
+`;
+    fs.writeFileSync(path.join(projectDir, '.env.example'), envExample);
     fs.writeFileSync(path.join(projectDir, '.gitignore'), 'node_modules/\n.env\n.DS_Store\n');
 
     console.log('✔ Creating documentation...');
-    const readmeContent = `# ${projectName}\n\nA Full-Stack project generated with SecureMERN.\n\n## Current Version\n\nV0.3\n\n## Quick Start\n\n\`\`\`bash\nnpx secure-mern create my-app\ncd my-app\nnpm install\nnpm run dev\n\`\`\`\n\n## Architecture\n\nReact + Vite\n     ↓\nExpress API\n     ↓\nNode.js\n\n## API Endpoints\n\n- \`GET /api/health\`\n\nThe development environment automatically starts both the React frontend and the Express API server.\n`;
+    const readmeContent = `# ${projectName}\n\nA Full-Stack project generated with SecureMERN.\n\n## Current Version\n\nV0.5\n\n## Quick Start\n\n\`\`\`bash\nnpx secure-mern create my-app\ncd my-app\nnpm install\nnpm run dev\n\`\`\`\n\n## Architecture\n\nReact + Vite\n     ↓\nExpress API\n     ↓\nNode.js\n\n## API Endpoints\n\n- \`GET /api/health\`\n\nThe development environment automatically starts both the React frontend and the Express API server.\n`;
     fs.writeFileSync(path.join(projectDir, 'README.md'), readmeContent);
 
     const rootPackageJson = {
@@ -74,7 +87,7 @@ function generateProject(projectName) {
     };
     fs.writeFileSync(path.join(projectDir, 'package.json'), JSON.stringify(rootPackageJson, null, 2));
 
-    console.log('\nProject created successfully!\n\nNext steps:\n');
+    console.log('\nSecureMERN project created successfully!\n\nNext steps:\n');
     console.log(`  cd ${projectName}`);
     console.log(`  npm install`);
     console.log(`  npm run dev\n`);

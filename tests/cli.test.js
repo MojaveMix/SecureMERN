@@ -27,7 +27,7 @@ test('Test 1, 2, 3, 4, 7: Project creation & template integrity', () => {
 
   const output = execSync(`${RUN_CMD} create ${projectName}`).toString();
 
-  assert.match(output, /Project created successfully/);
+  assert.match(output, /project created successfully/i);
   
   // Test 1: verify root structure
   assert.ok(fs.existsSync(path.join(projectDir, 'client')));
@@ -56,10 +56,14 @@ test('Test 1, 2, 3, 4, 7: Project creation & template integrity', () => {
   const serverSrc = path.join(serverDir, 'src');
   assert.ok(fs.existsSync(path.join(serverDir, 'package.json')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'config')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'config', 'security.js')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'config', 'env.js')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'controllers')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'middlewares')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'middlewares', 'security.middleware.js')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'models')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'routes')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'validators')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'services')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'utils')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'app.js')));
@@ -77,6 +81,8 @@ test('Test 1, 2, 3, 4, 7: Project creation & template integrity', () => {
   assert.match(envContent, /NODE_ENV=development/);
   assert.match(envContent, /PORT=5000/);
   assert.match(envContent, /VITE_API_URL=http:\/\/localhost:5000\/api/);
+  assert.match(envContent, /CLIENT_URL=http:\/\/localhost:5173/);
+  assert.match(envContent, /RATE_LIMIT_WINDOW_MS/);
 
   // Test 7: Template integrity - can be copied repeatedly
   const projectName2 = 'test-project-2';
