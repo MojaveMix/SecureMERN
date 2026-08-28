@@ -12,9 +12,18 @@ const colors = {
   bold: '\x1b[1m'
 };
 
+const logo = `
+   _____                          __  __ ______ _____  _   _ 
+  / ____|                        |  \\/  |  ____|  __ \\| \\ | |
+ | (___   ___  ___ _   _ _ __ ___| \\  / | |__  | |__) |  \\| |
+  \\___ \\ / _ \\/ __| | | | '__/ _ \\ |\\/| |  __| |  _  /| . \` |
+  ____) |  __/ (__| |_| | | |  __/ |  | | |____| | \\ \\| |\\  |
+ |_____/ \\___|\\___|\\__,_|_|  \\___|_|  |_|______|_|  \\_\\_| \\_|
+`;
+
 if (command === 'create') {
   generateProject(projectName);
 } else {
-  console.log(`${colors.cyan}${colors.bold}SecureMERN CLI${colors.reset}\n\n${colors.bold}Usage:${colors.reset}\n  secure-mern create <project-name>`);
+  console.log(`${colors.cyan}${colors.bold}${logo}${colors.reset}\n${colors.bold}Usage:${colors.reset}\n  secure-mern create <project-name>`);
   process.exit(1);
 }

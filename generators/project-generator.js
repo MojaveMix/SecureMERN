@@ -30,7 +30,16 @@ function generateProject(projectName) {
     process.exit(1);
   }
 
-  console.log(`${colors.cyan}${colors.bold}SecureMERN${colors.reset}\n`);
+  const logo = `
+   _____                          __  __ ______ _____  _   _ 
+  / ____|                        |  \\/  |  ____|  __ \\| \\ | |
+ | (___   ___  ___ _   _ _ __ ___| \\  / | |__  | |__) |  \\| |
+  \\___ \\ / _ \\/ __| | | | '__/ _ \\ |\\/| |  __| |  _  /| . \` |
+  ____) |  __/ (__| |_| | | |  __/ |  | | |____| | \\ \\| |\\  |
+ |_____/ \\___|\\___|\\__,_|_|  \\___|_|  |_|______|_|  \\_\\_| \\_|
+`;
+
+  console.log(`${colors.cyan}${colors.bold}${logo}${colors.reset}\n`);
   console.log(`${colors.green}✔${colors.reset} Creating project...`);
 
   try {
