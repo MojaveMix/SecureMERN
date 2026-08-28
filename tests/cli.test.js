@@ -35,18 +35,26 @@ test('Test 1, 2, 3, 4, 7: Project creation & template integrity', () => {
   assert.ok(fs.existsSync(path.join(projectDir, '.env.example')));
   assert.ok(fs.existsSync(path.join(projectDir, '.gitignore')));
   assert.ok(fs.existsSync(path.join(projectDir, 'README.md')));
+  assert.ok(fs.existsSync(path.join(projectDir, 'package.json')));
   
   // Test 2: Client structure
-  const clientSrc = path.join(projectDir, 'client', 'src');
+  const clientDir = path.join(projectDir, 'client');
+  const clientSrc = path.join(clientDir, 'src');
+  assert.ok(fs.existsSync(path.join(clientDir, 'package.json')));
+  assert.ok(fs.existsSync(path.join(clientDir, 'index.html')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'components')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'pages')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'hooks')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'services')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'utils')));
-  assert.ok(fs.existsSync(path.join(clientSrc, 'App.js')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'main.jsx')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'App.jsx')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'services', 'api.js')));
 
   // Test 3: Server structure
-  const serverSrc = path.join(projectDir, 'server', 'src');
+  const serverDir = path.join(projectDir, 'server');
+  const serverSrc = path.join(serverDir, 'src');
+  assert.ok(fs.existsSync(path.join(serverDir, 'package.json')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'config')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'controllers')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'middlewares')));
@@ -55,11 +63,20 @@ test('Test 1, 2, 3, 4, 7: Project creation & template integrity', () => {
   assert.ok(fs.existsSync(path.join(serverSrc, 'services')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'utils')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'app.js')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'server.js')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'routes', 'health.routes.js')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'controllers', 'health.controller.js')));
 
   // Test 4: README
   const readmeContent = fs.readFileSync(path.join(projectDir, 'README.md'), 'utf8');
   assert.match(readmeContent, new RegExp(`# ${projectName}`));
   assert.match(readmeContent, /A Full-Stack project generated with SecureMERN/);
+  
+  // Test 8: ENV example
+  const envContent = fs.readFileSync(path.join(projectDir, '.env.example'), 'utf8');
+  assert.match(envContent, /NODE_ENV=development/);
+  assert.match(envContent, /PORT=5000/);
+  assert.match(envContent, /VITE_API_URL=http:\/\/localhost:5000\/api/);
 
   // Test 7: Template integrity - can be copied repeatedly
   const projectName2 = 'test-project-2';
@@ -68,7 +85,7 @@ test('Test 1, 2, 3, 4, 7: Project creation & template integrity', () => {
     fs.rmSync(projectDir2, { recursive: true, force: true });
   }
   execSync(`${RUN_CMD} create ${projectName2}`);
-  assert.ok(fs.existsSync(path.join(projectDir2, 'client', 'src', 'App.js')));
+  assert.ok(fs.existsSync(path.join(projectDir2, 'client', 'src', 'App.jsx')));
   
   // Clean up
   fs.rmSync(projectDir, { recursive: true, force: true });

@@ -1,31 +1,38 @@
 # SecureMERN
 
-A secure Full-Stack project generator for React and Node.js.
+A Full-Stack project generator for React and Node.js.
 
-## Current Status
+## Current Version
 
-V0.1 — CLI Foundation
+V0.3
 
-## Installation
+## Quick Start
 
 ```bash
+npx secure-mern create my-app
+
+cd my-app
+
 npm install
+
+npm run dev
 ```
 
-## Usage
-
-```bash
-secure-mern create my-app
-```
-
-## Generated Structure
+## Architecture
 
 ```text
-my-app/
-├── client/
-├── server/
-└── README.md
+React + Vite
+     ↓
+Express API
+     ↓
+Node.js
 ```
+
+## API Endpoints
+
+- `GET /api/health`
+
+The development environment automatically starts both the React frontend and the Express API server.
 
 ## Roadmap
 
