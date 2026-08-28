@@ -1,6 +1,24 @@
-// This is a placeholder for V0.4 database config.
-const databaseConfig = {
-  // DB config would go here
-};
+require('dotenv').config({ path: require('path').join(__dirname, '../../../.env') });
 
-module.exports = databaseConfig;
+module.exports = {
+  development: {
+    username: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'secure_mern_dev',
+    host: process.env.DB_HOST || '127.0.0.1',
+    dialect: 'mysql'
+  },
+  test: {
+    dialect: 'sqlite',
+    storage: ':memory:',
+    logging: false
+  },
+  production: {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    logging: false
+  }
+};

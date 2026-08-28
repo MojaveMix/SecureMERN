@@ -6,7 +6,9 @@
 const requiredVars = [
   'NODE_ENV',
   'PORT',
-  'CLIENT_URL'
+  'CLIENT_URL',
+  'JWT_ACCESS_SECRET',
+  'JWT_REFRESH_SECRET'
 ];
 
 const validateEnv = () => {

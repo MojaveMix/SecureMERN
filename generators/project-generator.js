@@ -57,16 +57,77 @@ PORT=5000
 CLIENT_URL=http://localhost:5173
 VITE_API_URL=http://localhost:5000/api
 
+DB_HOST=127.0.0.1
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=secure_mern_dev
+
+JWT_ACCESS_SECRET=change-me-in-development
+JWT_ACCESS_EXPIRES_IN=15m
+JWT_REFRESH_SECRET=change-me-in-development
+JWT_REFRESH_EXPIRES_IN=7d
+
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX=100
-
 BODY_LIMIT=10kb
 `;
     fs.writeFileSync(path.join(projectDir, '.env.example'), envExample);
     fs.writeFileSync(path.join(projectDir, '.gitignore'), 'node_modules/\n.env\n.DS_Store\n');
 
     console.log('✔ Creating documentation...');
-    const readmeContent = `# ${projectName}\n\nA Full-Stack project generated with SecureMERN.\n\n## Current Version\n\nV0.5\n\n## Quick Start\n\n\`\`\`bash\nnpx secure-mern create my-app\ncd my-app\nnpm install\nnpm run dev\n\`\`\`\n\n## Architecture\n\nReact + Vite\n     ↓\nExpress API\n     ↓\nNode.js\n\n## API Endpoints\n\n- \`GET /api/health\`\n\nThe development environment automatically starts both the React frontend and the Express API server.\n`;
+    const readmeContent = `# ${projectName}
+
+A Full-Stack project generated with SecureMERN.
+
+## Current Version
+
+V0.6
+
+## Quick Start
+
+\`\`\`bash
+npx secure-mern create my-app
+cd my-app
+cp .env.example .env
+npm install
+npm run db:migrate
+npm run dev
+\`\`\`
+
+> **Note:** Make sure to replace \`JWT_ACCESS_SECRET\` and \`JWT_REFRESH_SECRET\` in your \`.env\` file with strong secrets before deploying to production.
+
+## Architecture
+
+React + Vite
+     ↓
+Express API
+     ↓
+Node.js
+
+## Authentication
+
+SecureMERN provides a ready-to-use authentication foundation.
+
+Features:
+- Registration
+- Login
+- Password hashing
+- JWT access tokens
+- Refresh tokens
+- Logout
+- Protected routes
+
+## API Endpoints
+
+- \`GET /api/health\`
+- \`POST /api/auth/register\`
+- \`POST /api/auth/login\`
+- \`POST /api/auth/refresh\`
+- \`POST /api/auth/logout\`
+- \`GET /api/auth/me\` (Protected)
+
+The development environment automatically starts both the React frontend and the Express API server.
+`;
     fs.writeFileSync(path.join(projectDir, 'README.md'), readmeContent);
 
     const rootPackageJson = {
@@ -79,7 +140,10 @@ BODY_LIMIT=10kb
         "install:server": "cd server && npm install",
         "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
         "dev:server": "cd server && npm run dev",
-        "dev:client": "cd client && npm run dev"
+        "dev:client": "cd client && npm run dev",
+        "db:migrate": "cd server && npx sequelize-cli db:migrate",
+        "db:migrate:undo": "cd server && npx sequelize-cli db:migrate:undo",
+        "db:seed": "cd server && npx sequelize-cli db:seed:all"
       },
       devDependencies: {
         "concurrently": "^8.2.2"

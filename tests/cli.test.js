@@ -47,6 +47,11 @@ test('Test 1, 2, 3, 4, 7: Project creation & template integrity', () => {
   assert.ok(fs.existsSync(path.join(clientSrc, 'hooks')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'services')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'utils')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'context', 'AuthContext.jsx')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'pages', 'Login.jsx')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'pages', 'Register.jsx')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'hooks', 'useAuth.js')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'services', 'auth.service.js')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'main.jsx')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'App.jsx')));
   assert.ok(fs.existsSync(path.join(clientSrc, 'services', 'api.js')));
@@ -58,18 +63,23 @@ test('Test 1, 2, 3, 4, 7: Project creation & template integrity', () => {
   assert.ok(fs.existsSync(path.join(serverSrc, 'config')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'config', 'security.js')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'config', 'env.js')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'config', 'auth.js')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'controllers')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'middlewares')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'middlewares', 'security.middleware.js')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'middlewares', 'auth.middleware.js')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'models')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'routes')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'validators')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'services')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'services', 'auth.service.js')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'utils')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'app.js')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'server.js')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'routes', 'health.routes.js')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'routes', 'auth.routes.js')));
   assert.ok(fs.existsSync(path.join(serverSrc, 'controllers', 'health.controller.js')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'controllers', 'auth.controller.js')));
 
   // Test 4: README
   const readmeContent = fs.readFileSync(path.join(projectDir, 'README.md'), 'utf8');

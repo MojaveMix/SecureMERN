@@ -1,10 +1,12 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const { helmetMiddleware, corsMiddleware } = require('./middlewares/security.middleware');
 const { apiLimiter } = require('./middlewares/rate-limit.middleware');
 const { notFoundHandler } = require('./middlewares/not-found.middleware');
 const { errorHandler } = require('./middlewares/error.middleware');
 const securityConfig = require('./config/security');
 const healthRoutes = require('./routes/health.routes');
+const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 
@@ -14,15 +16,17 @@ app.use(helmetMiddleware);
 // 2. Request parsing and limits
 app.use(express.json({ limit: securityConfig.bodyParser.limit }));
 app.use(express.urlencoded({ extended: true, limit: securityConfig.bodyParser.limit }));
+app.use(cookieParser());
 
 // 3. CORS configuration
 app.use(corsMiddleware);
 
-// 4. Rate limiting
+// 4. Rate limiting (General API)
 app.use('/api', apiLimiter);
 
 // 5. Routes
 app.use('/api/health', healthRoutes);
+app.use('/api/auth', authRoutes);
 
 // 6. 404 Handler for unknown routes
 app.use(notFoundHandler);
