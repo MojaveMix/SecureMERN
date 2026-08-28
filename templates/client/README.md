@@ -1,0 +1,3 @@
+# Client
+
+The frontend application.

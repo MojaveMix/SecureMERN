@@ -7,7 +7,7 @@ const path = require('node:path');
 const CLI_PATH = path.resolve(__dirname, '../cli/index.js');
 const RUN_CMD = `node ${CLI_PATH}`;
 
-test('Test 2: Missing project name', () => {
+test('Test 6: Missing name', () => {
   try {
     execSync(`${RUN_CMD} create`);
     assert.fail('Should have thrown an error');
@@ -17,11 +17,10 @@ test('Test 2: Missing project name', () => {
   }
 });
 
-test('Test 1 & 4: Creating a project and README generation', () => {
+test('Test 1, 2, 3, 4, 7: Project creation & template integrity', () => {
   const projectName = 'test-project';
   const projectDir = path.resolve(process.cwd(), projectName);
 
-  // Clean up if exists
   if (fs.existsSync(projectDir)) {
     fs.rmSync(projectDir, { recursive: true, force: true });
   }
@@ -29,26 +28,57 @@ test('Test 1 & 4: Creating a project and README generation', () => {
   const output = execSync(`${RUN_CMD} create ${projectName}`).toString();
 
   assert.match(output, /Project created successfully/);
-  assert.ok(fs.existsSync(projectDir));
+  
+  // Test 1: verify root structure
   assert.ok(fs.existsSync(path.join(projectDir, 'client')));
   assert.ok(fs.existsSync(path.join(projectDir, 'server')));
+  assert.ok(fs.existsSync(path.join(projectDir, '.env.example')));
+  assert.ok(fs.existsSync(path.join(projectDir, '.gitignore')));
+  assert.ok(fs.existsSync(path.join(projectDir, 'README.md')));
   
-  const readmePath = path.join(projectDir, 'README.md');
-  assert.ok(fs.existsSync(readmePath));
-  
-  const readmeContent = fs.readFileSync(readmePath, 'utf8');
-  assert.match(readmeContent, new RegExp(`# ${projectName}`));
-  assert.match(readmeContent, /A project generated with SecureMERN/);
+  // Test 2: Client structure
+  const clientSrc = path.join(projectDir, 'client', 'src');
+  assert.ok(fs.existsSync(path.join(clientSrc, 'components')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'pages')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'hooks')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'services')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'utils')));
+  assert.ok(fs.existsSync(path.join(clientSrc, 'App.js')));
 
+  // Test 3: Server structure
+  const serverSrc = path.join(projectDir, 'server', 'src');
+  assert.ok(fs.existsSync(path.join(serverSrc, 'config')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'controllers')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'middlewares')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'models')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'routes')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'services')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'utils')));
+  assert.ok(fs.existsSync(path.join(serverSrc, 'app.js')));
+
+  // Test 4: README
+  const readmeContent = fs.readFileSync(path.join(projectDir, 'README.md'), 'utf8');
+  assert.match(readmeContent, new RegExp(`# ${projectName}`));
+  assert.match(readmeContent, /A Full-Stack project generated with SecureMERN/);
+
+  // Test 7: Template integrity - can be copied repeatedly
+  const projectName2 = 'test-project-2';
+  const projectDir2 = path.resolve(process.cwd(), projectName2);
+  if (fs.existsSync(projectDir2)) {
+    fs.rmSync(projectDir2, { recursive: true, force: true });
+  }
+  execSync(`${RUN_CMD} create ${projectName2}`);
+  assert.ok(fs.existsSync(path.join(projectDir2, 'client', 'src', 'App.js')));
+  
   // Clean up
   fs.rmSync(projectDir, { recursive: true, force: true });
+  fs.rmSync(projectDir2, { recursive: true, force: true });
 });
 
-test('Test 3: Existing project', () => {
+test('Test 5: Existing project', () => {
   const projectName = 'test-project-exists';
   const projectDir = path.resolve(process.cwd(), projectName);
 
-  // Create it first
   if (!fs.existsSync(projectDir)) {
     fs.mkdirSync(projectDir);
   }
