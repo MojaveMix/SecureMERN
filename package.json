@@ -16,5 +16,10 @@
     "generator"
   ],
   "author": "Badr Moujahid",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+  "cli",
+  "generators",
+  "templates"
+]
 }
